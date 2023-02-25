@@ -30,17 +30,17 @@ window.onmouseup = () => {
 
 window.onmousemove = (e) => {
     if (track.dataset.mouseDownAt == "0") return;
-    const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX
+    const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX;
     const maxDelta = window.innerWidth / 2;
     const percentage = (mouseDelta / maxDelta) * -100;
     const nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage;
-    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -((track.offsetWidth - vmin(40)) / track.offsetWidth) * 100);
+    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -((track.offsetWidth - vmin(36)) / track.offsetWidth) * 100);
 
     track.dataset.percentage = nextPercentage;
 
     track.animate({
         transform: `translate(${nextPercentage}%, -50%)`
-    }, { duration: 1500, fill: "forwards", easing: "ease-in-out" });
+    }, { duration: 1200, fill: "forwards", easing: "ease-out" });
 
     for (var i = 0; i < images.length; i++) {
         const imageOffset = -(imageWidth * i / trackWidth) * 100;
@@ -48,7 +48,7 @@ window.onmousemove = (e) => {
 
         images[i].animate({
             objectPosition: `${50 + imageMovedPercentage * 100}% center`
-        }, { duration: 1500, fill: "forwards", easing: "ease-in-out" });
+        }, { duration: 1200, fill: "forwards", easing: "ease-out" });
 
     }
 }
@@ -68,13 +68,13 @@ scrollContainer.addEventListener('wheel', (e) => {
     const maxDelta = trackWidth;
     const percentage = (mouseDelta / maxDelta) * -50;
     const nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage;
-    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -((track.offsetWidth - vmin(36)) / track.offsetWidth) * 100);
 
     track.dataset.prevPercentage = nextPercentage;
 
     track.animate({
         transform: `translate(${nextPercentage}%, -50%)`
-    }, { duration: 800, fill: "forwards", easing: "ease-in-out" });
+    }, { duration: 700, fill: "forwards", easing: "ease-out" });
 
     for (var i = 0; i < images.length; i++) {
         const imageOffset = -(imageWidth * i / trackWidth) * 100;
@@ -82,6 +82,6 @@ scrollContainer.addEventListener('wheel', (e) => {
 
         images[i].animate({
             objectPosition: `${50 + imageMovedPercentage * 100}% center`
-        }, { duration: 800, fill: "forwards", easing: "ease-in-out" })
+        }, { duration: 700, fill: "forwards", easing: "ease-out" })
     }
 });

@@ -7,8 +7,8 @@ body {
 }
 
 .image {
-    width: 40vmin;
-    height: 56vmin;
+    width: 36vmin;
+    height: 50vmin;
     object-fit: cover;
     animation-timing-function: cubic-bezier(.5, -800, .5, 800);
     object-position: center;
@@ -18,13 +18,9 @@ body {
     display: flex;
     gap: 4vmin;
     position: absolute;
-    left: calc(50% - 20vmin);
+    left: calc(50% - 18vmin);
     top: 50%;
     transform: translate(0%, -50%);
-}
-
-#image-track.start {
-    animation-timing-function: cubic-bezier(.5, -800, .5, 800);
 }
 
 .crosshair {
@@ -32,21 +28,5 @@ body {
     left: 50%;
     top: 50%;
     z-index: 1000;
-}
-
-.crosshair-line {
-    background-color: #ffffff;
-    position: absolute;
-}
-
-.crosshair-line-vertical {
     transform: translate(-50%, -50%);
-    width: 1.5px;
-    height: 22px;
-}
-
-.crosshair-line-horizontal {
-    transform: translate(-50%, -50%);
-    width: 22px;
-    height: 1.5px;
 }
