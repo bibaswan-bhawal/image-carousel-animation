@@ -4,6 +4,8 @@ const images = document.getElementsByClassName('image');
 const trackWidth = track.offsetWidth;
 const imageWidth = trackWidth / images.length;
 
+const maxScrollPercentage = -((track.offsetWidth - vmin(36)) / track.offsetWidth) * 100;
+
 for (var i = 0; i < images.length; i++) {
     const imageOffset = -(imageWidth * i / trackWidth) * 100;
     const imageMovedPercentage = (0 - imageOffset) / 100;
@@ -11,7 +13,6 @@ for (var i = 0; i < images.length; i++) {
     images[i].style.objectPosition = `${50 + imageMovedPercentage * 100}% 50%`;
 }
 
-window.onmousedown = e => track.dataset.mouseDownAt = e.clientX;
 
 function vmin(percent) {
     const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -23,18 +24,20 @@ function vmin(percent) {
     return Math.min(vh, vw);
 }
 
-window.onmouseup = () => {
+const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
+
+const handleOnUp = () => {
     track.dataset.mouseDownAt = "0";
     track.dataset.prevPercentage = track.dataset.percentage;
 }
 
-window.onmousemove = (e) => {
+const handleOnMove = (e) => {
     if (track.dataset.mouseDownAt == "0") return;
     const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX;
     const maxDelta = window.innerWidth / 2;
     const percentage = (mouseDelta / maxDelta) * -100;
     const nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage;
-    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -((track.offsetWidth - vmin(36)) / track.offsetWidth) * 100);
+    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), maxScrollPercentage);
 
     track.dataset.percentage = nextPercentage;
 
@@ -53,10 +56,9 @@ window.onmousemove = (e) => {
     }
 }
 
-const scrollContainer = document.querySelector('body');
-
-scrollContainer.addEventListener('wheel', (e) => {
+const handleOnScroll = (e) => {
     var mouseDelta = 0;
+
     const max = Math.max(Math.abs(e.deltaX), Math.abs(e.deltaY));
 
     if (max == Math.abs(e.deltaX)) {
@@ -66,9 +68,9 @@ scrollContainer.addEventListener('wheel', (e) => {
     }
 
     const maxDelta = trackWidth;
-    const percentage = (mouseDelta / maxDelta) * -50;
+    const percentage = (mouseDelta / maxDelta) * -35;
     const nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage;
-    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -((track.offsetWidth - vmin(36)) / track.offsetWidth) * 100);
+    const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), maxScrollPercentage);
 
     track.dataset.prevPercentage = nextPercentage;
 
@@ -84,4 +86,19 @@ scrollContainer.addEventListener('wheel', (e) => {
             objectPosition: `${50 + imageMovedPercentage * 100}% center`
         }, { duration: 700, fill: "forwards", easing: "ease-out" })
     }
-});
+}
+
+
+window.addEventListener('wheel', handleOnScroll);
+
+window.onmousedown = e => handleOnDown(e);
+
+window.ontouchstart = e => handleOnDown(e.touches[0]);
+
+window.onmouseup = e => handleOnUp(e);
+
+window.ontouchend = e => handleOnUp(e.touches[0]);
+
+window.onmousemove = e => handleOnMove(e);
+
+window.ontouchmove = e => handleOnMove(e.touches[0]);

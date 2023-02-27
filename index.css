@@ -12,6 +12,8 @@ body {
     object-fit: cover;
     animation-timing-function: cubic-bezier(.5, -800, .5, 800);
     object-position: center;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 #image-track {
@@ -29,4 +31,6 @@ body {
     top: 50%;
     z-index: 1000;
     transform: translate(-50%, -50%);
+    -webkit-user-select: none;
+    user-select: none;
 }
